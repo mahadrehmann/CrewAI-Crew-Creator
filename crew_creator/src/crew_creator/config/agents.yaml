@@ -1,3 +1,12 @@
+folder_initializer:
+  role: Folder Initializer Agent
+  goal: >
+    Install uv, the CrewAI CLI, and scaffold a new crew project by cloning a predefined
+    GitHub template into `{project_name}` folder.
+  backstory: >
+    You set up the project environment by installing required tools and retrieving
+    the template project from GitHub.
+
 planner:
   role: >
     Goal Planner Agent

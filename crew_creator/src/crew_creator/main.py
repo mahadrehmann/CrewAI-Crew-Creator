@@ -120,7 +120,8 @@ def run():
     inputs = {
         'goal': prompt,
         'syntax': syntax,
-        'base_dir': "./output",  # Default base directory for file creation
+        'base_dir': "./",  # Default base directory for file creation
+        'project_name': "MY-lovely-PROJECT",
         'current_year': str(datetime.now().year)
     }
     

@@ -3,6 +3,7 @@ from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
 from src.crew_creator.tools.file_writer_tool import FileWriteTool
+from src.crew_creator.tools.shell_tool import ShellTool
 
 @CrewBase
 class CrewCreator():
@@ -10,6 +11,22 @@ class CrewCreator():
 
     agents: List[BaseAgent]
     tasks: List[Task]
+
+    @agent
+    def folder_initializer(self) -> Agent:
+        return Agent(
+            config=self.agents_config['folder_initializer'], 
+            tools=[ShellTool()],
+            verbose=True
+        )
+        
+
+    @task
+    def initialize_folder_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['initialize_folder_task']
+        )
+
 
     @agent
     def planner(self) -> Agent:
