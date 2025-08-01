@@ -14,14 +14,14 @@ prompt = '''
 
 syntax = '''
 
-    main.py:
+    src/project_name/main.py:
     #!/usr/bin/env python
     import sys
     import warnings
 
     from datetime import datetime
 
-    from crew_creator.crew import CrewCreator
+    from project_name.crew import CrewCreator
 
     warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
@@ -39,8 +39,7 @@ syntax = '''
         except Exception as e:
             raise Exception(f"An error occurred while running the crew: {e}")
 
-    crew.py:
-    # src/<your_project_name>/crew.py
+    src/project_name/crew.py:
     from crewai import Agent, Crew, Process, Task
     from crewai.project import CrewBase, agent, crew, task
     from crewai.agents.agent_builder.base_agent import BaseAgent
@@ -76,7 +75,7 @@ syntax = '''
                 verbose=True,
             )
 
-    agents.yaml:
+    src/project_name/config/agents.yaml:
     planner:
     role: >
         Goal Planner Agent
@@ -88,7 +87,7 @@ syntax = '''
         You are an expert AI architect who transforms a single sentence of user intent
         into a clear, actionable project plan: agents and tasks required for CREWAI projects
 
-    tasks.yaml:
+    src/project_name/config/tasks.yaml:
     planning_task:
     description: >
         Take the user's input `{goal}` and produce:

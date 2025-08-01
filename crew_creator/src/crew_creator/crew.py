@@ -1,9 +1,8 @@
-# src/<your_project_name>/crew.py
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
-
+from src.crew_creator.tools.file_writer_tool import FileWriteTool
 @CrewBase
 class CrewCreator():
     """CrewCreator crew"""
@@ -28,6 +27,7 @@ class CrewCreator():
     def file_creator(self) -> Agent:
         return Agent(
             config=self.agents_config['file_creator'],  # type: ignore[index]
+            tools=[FileWriteTool()],
             verbose=True
         )
 
@@ -36,7 +36,7 @@ class CrewCreator():
         return Task(
             config=self.tasks_config['write_files_task'],  # type: ignore[index]
         )
-        
+
     @crew
     def crew(self) -> Crew:
         """Creates the CrewCreator crew"""
