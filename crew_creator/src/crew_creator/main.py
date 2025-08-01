@@ -8,17 +8,16 @@ from crew_creator.crew import CrewCreator
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
-# This main file is intended to be a way for you to run your
-# crew locally, so refrain from adding unnecessary logic into this file.
-# Replace with inputs you want to test with, it will automatically
-# interpolate any tasks and agents information
+prompt = '''
+    Im Thinking of a syetem. It research a topic and generate a report on it.
+    '''
 
 def run():
     """
     Run the crew.
     """
     inputs = {
-        'topic': 'AI LLMs',
+        'goal': prompt,
         'current_year': str(datetime.now().year)
     }
     
