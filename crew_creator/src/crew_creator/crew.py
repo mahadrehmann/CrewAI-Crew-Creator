@@ -24,6 +24,19 @@ class CrewCreator():
             config=self.tasks_config['planning_task'],  # type: ignore[index]
         )
 
+    @agent
+    def file_creator(self) -> Agent:
+        return Agent(
+            config=self.agents_config['file_creator'],  # type: ignore[index]
+            verbose=True
+        )
+
+    @task
+    def write_files_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['write_files_task'],  # type: ignore[index]
+        )
+        
     @crew
     def crew(self) -> Crew:
         """Creates the CrewCreator crew"""

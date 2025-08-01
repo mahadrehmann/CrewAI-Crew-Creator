@@ -4,20 +4,44 @@ planning_task:
       - An array `agents` of agent names & roles
       - An array `tasks` mapping each agent to their responsibilities
   expected_output: >
-    A YAML object with top-level keys `agents`, `tasks`, and `structure`, for example:
-    agents:
-      - name: planner
-        role: Goal Planner Agent
-      - name: writer
-        role: File Writer Agent
-      - name: packager
-        role: Packager Agent
+    After deciding what agents and tasks are needed, return all the functionality in the syntax: {syntax}
+    and wrap each file in a ```file:<relative/path>``` code block exactly like this:
 
-    tasks:
-      - agent: planner
-        task: planning_task
-      - agent: writer
-        task: writing_task
-      - agent: packager
-        task: packaging_task
+    ```file:main.py
+    #!/usr/bin/env python
+    import sys
+    ...
+    ```
+    ```file:src/<your_project_name>/crew.py
+    from crewai import Agent, Crew, Process, Task
+    ...
+    ```
+    ```file:src/<your_project_name>/config/agents.yaml
+    planner:
+      role: Goal Planner Agent
+      ...
+    ```
+    ```file:src/<your_project_name>/config/tasks.yaml
+    planning_task:
+      description: ...
+      ...
+    ```
   agent: planner
+
+write_files_task:
+  description: >
+    Extract all code blocks from the previous output that follow the format:
+    ```file:<relative/path>
+    <file contents>
+    ```
+    and write them to disk under a project folder structure. Ensure directories exist,
+    preserve indentation, and return a manifest of all files written along with any errors.
+  expected_output: >
+    Creating files based on the provided code blocks. The output should include:
+    created_files:
+      - src/my_projectmain.py
+      - src/my_project/crew.py
+      - src/my_project/config/agents.yaml
+      - src/my_project/config/tasks.yaml
+    errors: []
+  agent: file_creator
