@@ -3,10 +3,8 @@ planning_task:
     Take the user's input `{goal}` and produce:
       - An array `agents` of agent names & roles
       - An array `tasks` mapping each agent to their responsibilities
-      - A recommended folder/file scaffold for the CrewAI project
   expected_output: >
     A YAML object with top-level keys `agents`, `tasks`, and `structure`, for example:
-    ```yaml
     agents:
       - name: planner
         role: Goal Planner Agent
@@ -22,5 +20,4 @@ planning_task:
         task: writing_task
       - agent: packager
         task: packaging_task
-    ```
   agent: planner
