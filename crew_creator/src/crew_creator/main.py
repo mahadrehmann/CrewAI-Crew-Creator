@@ -9,7 +9,7 @@ from crew_creator.crew import CrewCreator
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
 prompt = '''
-    Im Thinking of a syetem. It research a topic and generate a report on it.
+    Im Thinking of a syetem. It decides recipies i give it and give me recipies.
     '''
 
 syntax = '''
@@ -120,6 +120,7 @@ def run():
     inputs = {
         'goal': prompt,
         'syntax': syntax,
+        'base_dir': "./output",  # Default base directory for file creation
         'current_year': str(datetime.now().year)
     }
     

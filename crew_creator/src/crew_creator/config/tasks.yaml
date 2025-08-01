@@ -7,7 +7,7 @@ planning_task:
     After deciding what agents and tasks are needed, return all the functionality in the syntax: {syntax}
     and wrap each file in a ```file:<relative/path>``` code block exactly like this:
 
-    ```file:main.py
+    ```file:src/<your_project_name>/main.py
     #!/usr/bin/env python
     import sys
     ...
@@ -32,27 +32,10 @@ write_files_task:
   description: >
     Use the FileWriteTool to extract and materialize all `file:<path>` blocks from
     planner output (available as input) into actual project files.
+    You may pass `base_dir` input to define the root folder
+    where files should be created: {base_dir}
   expected_output: >
     JSON manifest:
       - created_files: list of paths written
       - errors: list of any errors encountered
   agent: file_creator
-
-# write_files_task:
-#   description: >
-#     Extract all code blocks from the previous output that follow the format:
-#     ```file:<relative/path>
-#     <file contents>
-#     ```
-#     and write them to disk under a project folder structure. Ensure directories exist,
-#     preserve indentation, and return a manifest of all files written along with any errors.
-#   expected_output: >
-#     Creating files based on the provided code blocks. The output should include:
-#     created_files:
-#       - src/my_projectmain.py
-#       - src/my_project/crew.py
-#       - src/my_project/config/agents.yaml
-#       - src/my_project/config/tasks.yaml
-#     errors: []
-#   agent: file_creator
-  
