@@ -66,3 +66,19 @@ write_files_task:
   agent: file_creator
   context:
     - initialize_folder_task
+
+packaging_task:
+  description: >-
+    Receive `project_path` and zip it into `crewai_output.zip` in `{base_dir}` – default `.`.
+    Use ZipTool with same input. Return:
+      {
+        "zip_path": "...path/to/crewai_output.zip",
+        "created_files": ["...zip..."],
+        "errors": []
+      }
+  expected_output: >-
+    JSON manifest including `zip_path`, `created_files`, and any `errors`.
+  agent: packager
+  context:
+    - initialize_folder_task
+    - write_files_task

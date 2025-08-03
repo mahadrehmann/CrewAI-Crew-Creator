@@ -5,6 +5,7 @@ from typing import List
 from src.crew_creator.tools.file_writer_tool import FileWriteTool
 from src.crew_creator.tools.shell_tool import ShellTool
 from src.crew_creator.tools.project_init_tool import ProjectInitTool
+from src.crew_creator.tools.packager_tool import ZipTool
 
 @CrewBase
 class CrewCreator():
@@ -58,6 +59,21 @@ class CrewCreator():
                 self.initialize_folder_task(),
                 self.planning_task()
             ],
+        )
+        
+    @agent
+    def packager(self) -> Agent:
+        return Agent(
+            config=self.agents_config['packager'],
+            tools=[ZipTool()],
+            verbose=True
+        )
+
+    @task
+    def packaging_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['packaging_task'],
+            context=[self.initialize_folder_task(), self.write_files_task()]
         )
 
     @crew

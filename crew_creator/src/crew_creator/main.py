@@ -6,7 +6,7 @@ from crew_creator.crew import CrewCreator
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
 prompt = '''
-    Im Thinking of a syetem. It takes user's hobbies and suggests careers.
+    Im Thinking of a syetem. It takes ingredients and suggests me recipies. Create a skeleton for this .
     '''
 
 syntax = '''
