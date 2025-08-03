@@ -1,25 +1,23 @@
+# initialize_folder_task:
+#   description: >
+#     Perform these steps using the ShellTool:
+#       1. Install uv: `wget -qO- https://astral.sh/uv/install.sh | sh`
+#       2. Install CrewAI CLI: `uv tool install crewai`
+#       3. Clone the template repo into a folder named `{project_name}`:
+#          `git clone https://github.com/mahadrehmann/crewai-folder-layout.git {project_name}`
+#     After each command, collect stdout, stderr, and return code.
+#     Any non-zero return code should be logged as an error.
+
 initialize_folder_task:
-  description: >
-    Perform these steps using the ShellTool:
-      1. Install uv: `wget -qO- https://astral.sh/uv/install.sh | sh`
-      2. Install CrewAI CLI: `uv tool install crewai`
-      3. Clone the template repo into a folder named `{project_name}`:
-         `git clone https://github.com/mahadrehmann/crewai-folder-layout.git {project_name}`
-    After each command, collect stdout, stderr, and return code.
-    Any non-zero return code should be logged as an error.
-    Return a JSON object:
+  description: |
+    Use the ProjectInitTool to install necessary tools and clone the template project.
+  expected_output: >
     {
-      "project_path": "<abs path to cloned folder>",
+      "project_path": "<absolute path to cloned folder>",
       "success": true or false,
       "errors": []
     }
-  expected_output: >
-    JSON with:
-      project_path: absolute path to scaffolded project
-      success: boolean
-      errors: array of error strings if any
   agent: folder_initializer
-
 
 
 planning_task:
@@ -52,14 +50,16 @@ planning_task:
     ```
   agent: planner
 
+
 write_files_task:
   description: >
     Use the FileWriteTool to extract and materialize all `file:<path>` blocks from
     planner output (available as input) into actual project files.
-    You may pass `base_dir` input to define the root folder
-    where files should be created: {base_dir}
+    Use the project_path output by initialize_folder_task as base_dir
   expected_output: >
     JSON manifest:
       - created_files: list of paths written
       - errors: list of any errors encountered
   agent: file_creator
+  context:
+    - initialize_folder_task
