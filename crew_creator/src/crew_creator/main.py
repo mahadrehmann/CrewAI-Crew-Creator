@@ -1,15 +1,12 @@
 #!/usr/bin/env python
 import sys
 import warnings
-
 from datetime import datetime
-
 from crew_creator.crew import CrewCreator
-
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
 prompt = '''
-    Im Thinking of a syetem. It decides recipies i give it and give me recipies.
+    Im Thinking of a syetem. It takes user's hobbies and suggests careers.
     '''
 
 syntax = '''
@@ -74,6 +71,9 @@ syntax = '''
                 process=Process.sequential,
                 verbose=True,
             )
+
+    src/project_name/__init__.py:
+    #keep empty
 
     src/project_name/config/agents.yaml:
     planner:
