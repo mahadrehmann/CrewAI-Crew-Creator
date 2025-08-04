@@ -1,54 +1,112 @@
-# CrewCreator Crew
+# CrewAI Crew Creator
 
-Welcome to the CrewCreator Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+**Generate fully functional [CrewAI](https://docs.crewai.com/) multi-agent systems with just one prompt.**  
+This project automates the design and creation of Crews, Agents, and Tasks for you - so you can focus on *what* you want, not *how* to implement it.
 
-## Installation
+---
 
-Ensure you have Python >=3.10 <3.14 installed on your system. This project uses [UV](https://docs.astral.sh/uv/) for dependency management and package handling, offering a seamless setup and execution experience.
+## 🚀 What It Does
 
-First, if you haven't already, install uv:
+The **CrewAI Crew Creator** is a Flask-based tool that:
+
+- Takes a single high-level prompt and a project name from the user.
+- Automatically decides:
+  - Number of agents
+  - Agent roles and tools
+  - Required tasks
+  - Logical task-agent mapping
+- Generates:
+  - A complete `main.py` to run the crew
+  - A complete `crew.py` for the crew
+  - Individual `agents.yaml` and `tasks.yaml` files
+  - A zipped folder ready for download and execution
+
+You don’t need to:
+- Design agent prompts
+- Figure out roles or responsibilities
+- Set up a CrewAI project from scratch
+
+Just describe your goal and we’ll create the scaffolding and logic for you.
+
+---
+
+## 🛠 How to Use
+
+### 1. Run Locally
 
 ```bash
-pip install uv
+git clone https://github.com/mahadrehmann/CrewAI-Crew-Creator.git
+python -m venv venv
+source venv/bin/activate  # or venv\Scripts\activate on Windows
+pip install -r requirements.txt
+cd crew_creator
+python app.py
 ```
 
-Next, navigate to your project directory and install the dependencies:
+Visit `http://localhost:5000` in your browser.
 
-(Optional) Lock the dependencies and install them by using the CLI command:
-```bash
-crewai install
+### 2. Enter Details
+
+- **Prompt**: Describe what you want the AI agents to achieve.
+- **Project Name**: A name for your crew (used in file naming).
+
+Hit submit, download the zip, and you're done.
+
+---
+
+## 💡 Example Use Case
+
+> Prompt: "Build an AI system that performs market research on tech startups and summarizes key trends"
+
+🧠 **What Happens Automatically:**
+
+- 3 agents created:
+  - Market Research Analyst
+  - Trend Extractor
+  - Report Generator
+- Tasks mapped intelligently.
+- Execution logic is added to `main.py`.
+- Entire project zipped for you to run or edit.
+
+---
+
+## 📁 Project Structure (Generated)
+
 ```
-### Customizing
+<project_name>/
+├── .gitignore
+├── knowledge/
+├── pyproject.toml
+├── README.md
+├── .env
+└── src/
+    └── <project_name>/
+        ├── __init__.py
+        ├── main.py
+        ├── crew.py
+        └── config/
+            ├── agents.yaml
+            └── tasks.yaml
 
-**Add your `OPENAI_API_KEY` into the `.env` file**
-
-- Modify `src/crew_creator/config/agents.yaml` to define your agents
-- Modify `src/crew_creator/config/tasks.yaml` to define your tasks
-- Modify `src/crew_creator/crew.py` to add your own logic, tools and specific args
-- Modify `src/crew_creator/main.py` to add custom inputs for your agents and tasks
-
-## Running the Project
-
-To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
-
-```bash
-$ crewai run
 ```
 
-This command initializes the crew_creator Crew, assembling the agents and assigning them tasks as defined in your configuration.
+---
 
-This example, unmodified, will run the create a `report.md` file with the output of a research on LLMs in the root folder.
+## 📦 Technologies
 
-## Understanding Your Crew
+- 🧠 [CrewAI](https://github.com/joaomdmoura/crewai)
+- 🧰 Flask (UI & ZIP delivery)
 
-The crew_creator Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
+---
 
-## Support
+## 🤖 Why This Tool?
 
-For support, questions, or feedback regarding the CrewCreator Crew or crewAI.
-- Visit our [documentation](https://docs.crewai.com)
-- Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
-- [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
-- [Chat with our docs](https://chatg.pt/DWjSBZn)
+Most CrewAI tutorials and setups ask you to:
+- Design prompts for each agent manually
+- Map tasks by hand
+- Experiment with different agent counts
 
-Let's create wonders together with the power and simplicity of crewAI.
+With **Crew Creator**, you skip all of that.  
+Just define your goal — the tool handles the rest intelligently.
+
+---
