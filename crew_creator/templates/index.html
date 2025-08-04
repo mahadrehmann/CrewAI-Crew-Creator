@@ -250,81 +250,89 @@
     </div>
 
     <script>
-        // Get form elements
         const form = document.getElementById('creatorForm');
         const loading = document.getElementById('loading');
         const message = document.getElementById('message');
         const submitBtn = document.querySelector('.submit-btn');
-
-        // Form submission handler
-        form.addEventListener('submit', function(e) {
-            // Basic client-side validation
+    
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+    
             const prompt = document.getElementById('prompt').value.trim();
             const projectName = document.getElementById('project_name').value.trim();
-
+    
             if (!prompt || !projectName) {
                 showMessage('Please fill in all required fields.', 'error');
-                e.preventDefault();
                 return;
             }
-
-            // Validate project name (basic alphanumeric and common characters)
+    
             const validNamePattern = /^[a-zA-Z0-9_\-\s]+$/;
             if (!validNamePattern.test(projectName)) {
                 showMessage('Project name can only contain letters, numbers, spaces, hyphens, and underscores.', 'error');
-                e.preventDefault();
                 return;
             }
-
-            // Show loading state
+    
             showLoading(true);
-        });
-
-        // Show loading spinner
-        function showLoading(show) {
-            if (show) {
-                loading.style.display = 'flex';
-                submitBtn.disabled = true;
-                submitBtn.style.opacity = '0.7';
-            } else {
-                loading.style.display = 'none';
-                submitBtn.disabled = false;
-                submitBtn.style.opacity = '1';
+    
+            const formData = new URLSearchParams();
+            formData.append('prompt', prompt);
+            formData.append('project_name', projectName);
+    
+            try {
+                const response = await fetch("/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: formData.toString()
+                });
+    
+                if (!response.ok) throw new Error("Failed to create project");
+    
+                // Trigger the file download
+                const downloadUrl = `/download/${encodeURIComponent(projectName)}`;
+                const link = document.createElement("a");
+                link.href = downloadUrl;
+                link.download = `${projectName}.zip`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+    
+                showMessage('Project created and download should start.', 'success');
+            } catch (err) {
+                console.error(err);
+                showMessage('Error creating project. Please try again.', 'error');
+            } finally {
+                showLoading(false);
+                form.reset();
             }
+        });
+    
+        function showLoading(show) {
+            loading.style.display = show ? 'flex' : 'none';
+            submitBtn.disabled = show;
+            submitBtn.style.opacity = show ? '0.7' : '1';
         }
-
-        // Show message
+    
         function showMessage(text, type) {
             message.textContent = text;
             message.className = `message ${type}`;
             message.style.display = 'block';
-            
-            // Auto-hide after 5 seconds
             setTimeout(() => {
                 message.style.display = 'none';
             }, 5000);
         }
-
-        // Add some interactive feedback
+    
         const inputs = document.querySelectorAll('input, textarea');
         inputs.forEach(input => {
-            input.addEventListener('focus', function() {
-                this.parentElement.style.transform = 'scale(1.02)';
-            });
-
-            input.addEventListener('blur', function() {
-                this.parentElement.style.transform = 'scale(1)';
-            });
+            input.addEventListener('focus', () => input.parentElement.style.transform = 'scale(1.02)');
+            input.addEventListener('blur', () => input.parentElement.style.transform = 'scale(1)');
         });
-
-        // Character counter for textarea (optional enhancement)
+    
         const textarea = document.getElementById('prompt');
-        textarea.addEventListener('input', function() {
-            // You can add character count display here if needed
-            // For now, just ensure the textarea expands nicely
+        textarea.addEventListener('input', function () {
             this.style.height = 'auto';
             this.style.height = this.scrollHeight + 'px';
         });
     </script>
+    
 </body>
 </html>
