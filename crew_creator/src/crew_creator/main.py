@@ -27,7 +27,7 @@ syntax = '''
         Run the crew.
         """
         inputs = {
-            'goal': "gOAL of the crew",
+            'goal': "GOAL of the crew",
             'current_year': str(datetime.now().year)
         }
         
@@ -50,16 +50,16 @@ syntax = '''
         tasks: List[Task]
 
         @agent
-        def planner(self) -> Agent:
+        def agent_name(self) -> Agent:
             return Agent(
-                config=self.agents_config['planner'],  # type: ignore[index]
+                config=self.agents_config['agent_name'],  # type: ignore[index]
                 verbose=True
             )
 
         @task
-        def planning_task(self) -> Task:
+        def agent_task(self) -> Task:
             return Task(
-                config=self.tasks_config['planning_task'],  # type: ignore[index]
+                config=self.tasks_config['agent_task'],  # type: ignore[index]
             )
 
         @crew
@@ -76,41 +76,21 @@ syntax = '''
     #keep empty
 
     src/project_name/config/agents.yaml:
-    planner:
+    agent_name:
     role: >
-        Goal Planner Agent
+        Agent's goal
     goal: >
-        Given a high-level objective `{goal}`, decompose it into:
-        1. A list of agents required (names & brief roles)
-        2. A list of tasks each agent must perform
+        Given a ....
     backstory: >
-        You are an expert AI architect who transforms a single sentence of user intent
-        into a clear, actionable project plan: agents and tasks required for CREWAI projects
+        You are an expert ...
 
     src/project_name/config/tasks.yaml:
-    planning_task:
+    agent_task:
     description: >
-        Take the user's input `{goal}` and produce:
-        - An array `agents` of agent names & roles
-        - An array `tasks` mapping each agent to their responsibilities
+        Take the ...
     expected_output: >
-        A YAML object with top-level keys `agents`, `tasks`, and `structure`, for example:
-        agents:
-        - name: planner
-            role: Goal Planner Agent
-        - name: writer
-            role: File Writer Agent
-        - name: packager
-            role: Packager Agent
-
-        tasks:
-        - agent: planner
-            task: planning_task
-        - agent: writer
-            task: writing_task
-        - agent: packager
-            task: packaging_task
-    agent: planner
+        A ....
+    agent: agent_name
   '''
 
 def run(inputs):

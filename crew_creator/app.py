@@ -68,6 +68,8 @@
 
 # filepath: /home/mahad/Desktop/Agentic/CrewAI-Creator/crew_creator/app.py
 
+# -----------------------------------------------------------------------------------------------------------------------------------
+
 from flask import (
     Flask,
     request,
@@ -151,3 +153,95 @@ def download(project_name):
 if __name__ == "__main__":
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     app.run(debug=True)
+
+
+# from flask import (
+#     Flask,
+#     request,
+#     send_from_directory,
+#     render_template,
+#     redirect,
+#     url_for,
+# )
+# import os
+# import shutil
+# import threading
+# import sys
+# from datetime import datetime
+
+# app = Flask(__name__)
+# UPLOAD_FOLDER = "./output"
+# app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
+# # Make CrewAI runner importable
+# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "src")))
+# from crew_creator.main import run  # noqa: E402
+
+# @app.route("/", methods=["GET", "POST"])
+# def index():
+#     error_msg = None
+#     if request.method == "POST":
+#         prompt = request.form.get("prompt")
+#         project_name = request.form.get("project_name")
+
+#         inputs = {
+#             "goal": prompt,
+#             "syntax": "",
+#             "base_dir": app.config["UPLOAD_FOLDER"],
+#             "project_name": project_name,
+#             "current_year": str(datetime.now().year),
+#         }
+
+#         try:
+#             run(inputs=inputs)
+#         except Exception as e:
+#             error_msg = str(e)
+
+#         if error_msg:
+#             return render_template("index.html", error=error_msg)
+
+#         return redirect(url_for("download", project_name=project_name))
+
+#     return render_template("index.html", error=error_msg)
+
+# @app.route("/download/<project_name>")
+# def download(project_name):
+#     zip_filename = f"{project_name}.zip"
+#     zip_dir = os.path.abspath(app.config["UPLOAD_FOLDER"])
+#     zip_path = os.path.join(zip_dir, zip_filename)
+#     project_dir = os.path.join(zip_dir, project_name)
+
+#     if not os.path.exists(zip_path):
+#         return "File not found", 404
+
+#     response = send_from_directory(
+#         directory=zip_dir,
+#         path=zip_filename,
+#         as_attachment=True,
+#         download_name=zip_filename,
+#         mimetype="application/zip",
+#     )
+
+#     def cleanup():
+#         try:
+#             if os.path.exists(zip_path):
+#                 os.remove(zip_path)
+#         except Exception:
+#             pass
+#         if os.path.isdir(project_dir):
+#             try:
+#                 shutil.rmtree(project_dir, ignore_errors=True)
+#             except Exception:
+#                 pass
+
+#     # Schedule cleanup after response finishes
+#     response.call_on_close(cleanup)
+
+#     # Fallback: run cleanup shortly in background thread
+#     threading.Thread(target=cleanup, daemon=True).start()
+
+#     return response
+
+# if __name__ == "__main__":
+#     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+#     app.run(debug=True)
