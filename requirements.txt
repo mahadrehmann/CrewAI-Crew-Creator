@@ -1,0 +1,17 @@
+flask
+
+# Core CrewAI framework (including CLI and Python SDK)
+crewai[tools]
+
+# Pydantic for your custom tool input schemas
+pydantic>=2.11
+
+# Regex is used by FileWriteTool
+regex
+
+# tiktoken for any token‐counting or OpenAI compatibility (will install wheels on Python 3.11/3.12)
+tiktoken
+
+# (Optional) If you ever parse/write YAML in code:
+PyYAML
+

@@ -8,3 +8,5 @@ knowledge/
 
 .venv
 .venv/
+.venv311
+.venv311/

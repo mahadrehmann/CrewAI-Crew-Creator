@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrewAI Folder Creator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c5aa0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #2c5aa0, #4f7dc9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c5aa0;
+            font-size: 1.1rem;
+        }
+
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            background: #f8fafc;
+            transition: all 0.3s ease;
+            resize: vertical;
+        }
+
+        textarea:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #4f7dc9;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(79, 125, 201, 0.1);
+            transform: translateY(-2px);
+        }
+
+        textarea:hover, input[type="text"]:hover {
+            border-color: #a2b9d1;
+            background: #ffffff;
+        }
+
+        textarea {
+            min-height: 120px;
+            font-family: inherit;
+            line-height: 1.5;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #4f7dc9, #2c5aa0);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(79, 125, 201, 0.4);
+            background: linear-gradient(135deg, #5a8bd4, #3461a5);
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(79, 125, 201, 0.3);
+        }
+
+        .loading {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e1e8ed;
+            border-top: 2px solid #4f7dc9;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 30px 25px;
+            }
+
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 25px;
+            }
+
+            textarea {
+                min-height: 100px;
+            }
+        }
+
+        /* Subtle animation for form elements */
+        .form-group {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .form-group:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .form-group:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .submit-btn {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease 0.3s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CrewAI Folder Creator</h1>
+        <form method="POST" action="/" id="creatorForm">
+            <div class="form-group">
+                <label for="prompt">Prompt:</label>
+                <textarea id="prompt" name="prompt" rows="6" cols="60" required placeholder="Enter your project prompt or description here..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="project_name">Project Folder Name:</label>
+                <input type="text" id="project_name" name="project_name" required placeholder="Enter your project folder name">
+            </div>
+
+            <button type="submit" class="submit-btn">Create Project</button>
+        </form>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <span>Creating your project...</span>
+        </div>
+
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        // Get form elements
+        const form = document.getElementById('creatorForm');
+        const loading = document.getElementById('loading');
+        const message = document.getElementById('message');
+        const submitBtn = document.querySelector('.submit-btn');
+
+        // Form submission handler
+        form.addEventListener('submit', function(e) {
+            // Basic client-side validation
+            const prompt = document.getElementById('prompt').value.trim();
+            const projectName = document.getElementById('project_name').value.trim();
+
+            if (!prompt || !projectName) {
+                showMessage('Please fill in all required fields.', 'error');
+                e.preventDefault();
+                return;
+            }
+
+            // Validate project name (basic alphanumeric and common characters)
+            const validNamePattern = /^[a-zA-Z0-9_\-\s]+$/;
+            if (!validNamePattern.test(projectName)) {
+                showMessage('Project name can only contain letters, numbers, spaces, hyphens, and underscores.', 'error');
+                e.preventDefault();
+                return;
+            }
+
+            // Show loading state
+            showLoading(true);
+        });
+
+        // Show loading spinner
+        function showLoading(show) {
+            if (show) {
+                loading.style.display = 'flex';
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.7';
+            } else {
+                loading.style.display = 'none';
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+            }
+        }
+
+        // Show message
+        function showMessage(text, type) {
+            message.textContent = text;
+            message.className = `message ${type}`;
+            message.style.display = 'block';
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 5000);
+        }
+
+        // Add some interactive feedback
+        const inputs = document.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+
+        // Character counter for textarea (optional enhancement)
+        const textarea = document.getElementById('prompt');
+        textarea.addEventListener('input', function() {
+            // You can add character count display here if needed
+            // For now, just ensure the textarea expands nicely
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+        });
+    </script>
+</body>
+</html>

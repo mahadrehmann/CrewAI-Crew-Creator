@@ -6,7 +6,7 @@ from crew_creator.crew import CrewCreator
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
 prompt = '''
-    Im Thinking of a syetem. It takes ingredients and suggests me recipies. Create a skeleton for this .
+    Im Thinking of a syetem. It takes ingredients and suggests me recipies. Create a skeleton for this.
     '''
 
 syntax = '''
@@ -113,17 +113,17 @@ syntax = '''
     agent: planner
   '''
 
-def run():
+def run(inputs):
     """
     Run the crew.
     """
-    inputs = {
-        'goal': prompt,
-        'syntax': syntax,
-        'base_dir': "./",  # Default base directory for file creation
-        'project_name': "MY-lovely-PROJECT",
-        'current_year': str(datetime.now().year)
-    }
+    # inputs = {
+    #     'goal': prompt,
+    #     'syntax': syntax,
+    #     'base_dir': "./",  # Default base directory for file creation
+    #     'project_name': "MY-lovely-PROJECT",
+    #     'current_year': str(datetime.now().year)
+    # }
     
     try:
         CrewCreator().crew().kickoff(inputs=inputs)
